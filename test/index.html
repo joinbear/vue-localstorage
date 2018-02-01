@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="http://vuejs.org/js/vue.min.js?a=84848"></script>
+	<script type="text/javascript" src="../dist/vue-localstorage.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		<button @click="show">显示cookie</button>
+		{{ storage.local }} <br/>
+		{{ storage.cookie }}
+	</div>
+	<script type="text/javascript">
+		new Vue({
+			el: "#app",
+			created:function(){
+				this.$localStorage.setStorage("test","test localstorage",30*1000);
+				this.$localStorage.setCookie("test","aaaa",30*1000);
+			},
+			data: {
+            	storage: {
+            		cookie: "",
+            		local: ""
+            	}
+	        },
+	        methods: {
+	            show: function () {
+	                this.storage.local = this.$localStorage.getStorage("test");
+	                this.storage.cookie = this.$localStorage.getCookie("test")
+	            }
+	        }
+		});
+	</script>
+</body>
+</html>
