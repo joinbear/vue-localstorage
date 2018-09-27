@@ -9,26 +9,33 @@
 <body>
 	<div id="app">
 		<button @click="show">显示cookie</button>
-		{{ storage.local }} <br/>
-		{{ storage.cookie }}
+		localstorage:{{ storage.local }} <br/>
+		localstorage新开页面值也存在
+		sessionstorage:{{ storage.session }}
+		sessionstorage新开页面值将不存在
+		
 	</div>
 	<script type="text/javascript">
 		new Vue({
 			el: "#app",
 			created:function(){
 				this.$localStorage.setStorage("test","test localstorage",30*1000);
-				this.$localStorage.setCookie("test","aaaa",30*1000);
+				let local = this.$localStorage.getStorage("test")
+				if(!local){
+					this.$localStorage.setSession("test","test sessionStorage");
+				}
 			},
 			data: {
             	storage: {
             		cookie: "",
-            		local: ""
+            		local: "",
+            		session: ""
             	}
 	        },
 	        methods: {
 	            show: function () {
 	                this.storage.local = this.$localStorage.getStorage("test");
-	                this.storage.cookie = this.$localStorage.getCookie("test")
+	                this.storage.session = this.$localStorage.getSession("test")
 	            }
 	        }
 		});

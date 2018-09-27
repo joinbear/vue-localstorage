@@ -1,6 +1,7 @@
-export default class VueLocalStorage {
+class VueLocalStorage {
     constructor () {
         this.storage = window.localStorage;
+        this.session = window.sessionStorage;
         this.prefix = "vue__";
     }
     install (Vue) {
@@ -11,6 +12,30 @@ export default class VueLocalStorage {
                 return _that;
             }
         });
+    }
+    /**
+     * [setSession 设置数据到sessionStorage]
+     * @param {[type]} name  [键名]
+     * @param {[type]} value [数据]
+     */
+    setSession(name,value) {
+        this.session.setItem(
+            this.prefix + name,
+            JSON.stringify({
+                value: value, 
+            })
+        );
+    }
+    /**
+     * [getSession 获取存储的数据]
+     * @param  {[type]} name [获取数据的名称]
+     * @return {[type]}      [description]
+     */
+    getSession(name) {
+        let item = this.session.getItem(this.prefix + name);
+        if(!item) return "";
+        item = JSON.parse(item);
+        return item.value;
     }
     /**
      * [getExpire 获取过期时间，毫秒]
@@ -117,7 +142,7 @@ export default class VueLocalStorage {
         this.setCookie(name, "", -1);
     }
 }
-
+export default new VueLocalStorage;
 if (window.Vue) {
     window.Vue.use(new VueLocalStorage);
 }
