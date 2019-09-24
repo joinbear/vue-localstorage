@@ -2,7 +2,7 @@
   "name": "vue-localstorage",
   "version": "1.2.0",
   "description": "localstorage and cookie for vuejs",
-  "main": "src/index.js",
+  "main": "dist/vue-localstorage.min.js",
   "directories": {
     "test": "test"
   },
