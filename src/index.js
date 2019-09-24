@@ -1,9 +1,7 @@
-class VueLocalStorage {
-    constructor () {
-        this.storage = window.localStorage;
-        this.session = window.sessionStorage;
-        this.prefix = "vue__";
-    }
+const VueLocalStorage = {
+    storage: window.localStorage,
+    session: window.sessionStorage,
+    prefix: 'vue__',
     install (Vue) {
         let _that = this;
         Vue.localStorage = _that;
@@ -12,7 +10,7 @@ class VueLocalStorage {
                 return _that;
             }
         });
-    }
+    },
     /**
      * [setSession 设置数据到sessionStorage]
      * @param {[type]} name  [键名]
@@ -25,7 +23,7 @@ class VueLocalStorage {
                 value: value, 
             })
         );
-    }
+    },
     /**
      * [getSession 获取存储的数据]
      * @param  {[type]} name [获取数据的名称]
@@ -36,7 +34,7 @@ class VueLocalStorage {
         if(!item) return "";
         item = JSON.parse(item);
         return item.value;
-    }
+    },
     /**
      * [getExpire 获取过期时间，毫秒]
      * @param  {Number} expire [时间毫秒，默认为0]
@@ -44,10 +42,10 @@ class VueLocalStorage {
      */
     getExpire(expire = 0){
         return expire > 0 ? new Date().getTime() + expire : expire;
-    }
+    },
     isExpired(expire){
         return ( expire > 0 && expire < new Date().getTime() ) ? true : false;
-    }
+    },
     /**
      * [setStorage 存储内容到本地]
      * @param {String} name   [键名]
@@ -62,7 +60,7 @@ class VueLocalStorage {
                 expire: this.getExpire(expire)
             })
         );
-    }
+    },
     /**
      * [getStorage 获取存储内容，如果过期返回空值]
      * @param  {[type]} name [键名]
@@ -73,11 +71,11 @@ class VueLocalStorage {
         if(!item) return "";
         item = JSON.parse(item);
         if(this.isExpired(item.expire)){
-        	this.removeStorage(name);
-        	return "";
+            this.removeStorage(name);
+            return "";
         }
         return item.value;
-    }
+    },
     /**
      * [removeStorage 移除缓存内容]
      * @param  {String} name [键名]
@@ -85,7 +83,7 @@ class VueLocalStorage {
      */
     removeStorage (name) {
         return this.storage.removeItem(this.prefix + name);
-    }
+    },
     /**
      * [keyStorage 获取指定索引的storage]
      * @param  {[type]} index [索引值]
@@ -93,7 +91,7 @@ class VueLocalStorage {
      */
     keyStorage(index) {
         return this.storage.key(index);
-    }
+    },
     /**
      * [clearAll 清除所有的缓存数据]
      * @return {[type]} [description]
@@ -106,7 +104,7 @@ class VueLocalStorage {
             if (false == `/${this.prefix}/i`.test(key)) continue;
             this.storage.removeItem(key);
         }
-    }
+    },
     /**
      * [setCookie 设置cookie]
      * @param {String} name   [cookie键名]
@@ -118,7 +116,7 @@ class VueLocalStorage {
     setCookie(name, value, expire = 24 * 60 * 60 * 1000,domain = "",path = '/') {
         let expires = "expires=" + new Date(this.getExpire(expire)).toGMTString();
         document.cookie = `${name}=${encodeURIComponent(value)};${expires};domain=${domain};path=${path}`;
-    }
+    },
     /**
      * [getCookie 获取cookie]
      * @param  {String} name [cookie键名]
@@ -132,7 +130,7 @@ class VueLocalStorage {
                return decodeURIComponent(cookie.substring(name.length + 1));
             }
         }
-    }
+    },
     /**
      * [clearCookie 清除指定cookie]
      * @param  {String} name [cookie键名]
@@ -142,7 +140,7 @@ class VueLocalStorage {
         this.setCookie(name, "", -1);
     }
 }
-export default new VueLocalStorage;
+export default VueLocalStorage;
 if (window.Vue) {
-    window.Vue.use(new VueLocalStorage);
+    window.Vue.use(VueLocalStorage);
 }
