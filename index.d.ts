@@ -24,3 +24,10 @@ declare module 'vue/types/vue' {
 }
 export default localStroage;
 export as namespace localStroage;
+
+// import localStroage from './storage';
+
+// export default localStroage;
+// export as namespace localStroage;
+
+// export * from './storage.main';
